@@ -102,18 +102,18 @@ export default function BudgetTracker({ transactions }) {
   ])].sort();
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-colors">
       <div className="flex justify-between items-center mb-6">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900">Budget Tracker</h3>
-          <p className="text-sm text-gray-600">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Budget Tracker</h3>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
             {format(currentMonth, 'MMMM yyyy')}
           </p>
         </div>
         <div className="flex items-center space-x-2">
           <button
             onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1))}
-            className="p-1 hover:bg-gray-100 rounded"
+            className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded text-gray-600 dark:text-gray-400"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
@@ -121,13 +121,13 @@ export default function BudgetTracker({ transactions }) {
           </button>
           <button
             onClick={() => setCurrentMonth(new Date())}
-            className="text-sm px-2 py-1 bg-blue-100 text-blue-700 rounded hover:bg-blue-200"
+            className="text-sm px-2 py-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-800"
           >
             Today
           </button>
           <button
             onClick={() => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1))}
-            className="p-1 hover:bg-gray-100 rounded"
+            className="p-1 hover:bg-gray-100 dark:hover:bg-gray-700 rounded text-gray-600 dark:text-gray-400"
           >
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
@@ -137,8 +137,8 @@ export default function BudgetTracker({ transactions }) {
             onClick={() => setIsEditing(!isEditing)}
             className={`px-3 py-1 rounded text-sm transition-colors ${
               isEditing 
-                ? 'bg-green-100 text-green-700 hover:bg-green-200' 
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-800' 
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             {isEditing ? 'Done' : 'Edit Budgets'}
@@ -147,19 +147,19 @@ export default function BudgetTracker({ transactions }) {
       </div>
 
       {/* Overall Summary */}
-      <div className="mb-6 p-4 bg-gray-50 rounded-lg">
+      <div className="mb-6 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg transition-colors">
         <div className="flex justify-between items-center mb-2">
-          <span className="text-sm font-medium text-gray-700">Total Monthly Budget</span>
-          <span className="text-lg font-bold text-gray-900">${totalBudget.toFixed(2)}</span>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Total Monthly Budget</span>
+          <span className="text-lg font-bold text-gray-900 dark:text-white">${totalBudget.toFixed(2)}</span>
         </div>
         <div className="flex justify-between items-center mb-3">
-          <span className="text-sm font-medium text-gray-700">Total Spent</span>
-          <span className={`text-lg font-bold ${totalSpent > totalBudget ? 'text-red-600' : 'text-green-600'}`}>
+          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">Total Spent</span>
+          <span className={`text-lg font-bold ${totalSpent > totalBudget ? 'text-red-600 dark:text-red-400' : 'text-green-600 dark:text-green-400'}`}>
             ${totalSpent.toFixed(2)}
           </span>
         </div>
         {totalBudget > 0 && (
-          <div className="w-full bg-gray-200 rounded-full h-3">
+          <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-3">
             <div 
               className={`h-3 rounded-full transition-all duration-300 ${
                 totalSpent > totalBudget ? 'bg-red-500' : 'bg-blue-500'
@@ -168,7 +168,7 @@ export default function BudgetTracker({ transactions }) {
             ></div>
           </div>
         )}
-        <div className="text-xs text-gray-600 mt-2">
+        <div className="text-xs text-gray-600 dark:text-gray-400 mt-2">
           {totalBudget > 0 ? (
             <span>
               ${(totalBudget - totalSpent).toFixed(2)} {totalSpent > totalBudget ? 'over budget' : 'remaining'}
@@ -187,12 +187,12 @@ export default function BudgetTracker({ transactions }) {
           const { status, percentage } = getBudgetStatus(category, spent, budget);
 
           return (
-            <div key={category} className="border border-gray-200 rounded-lg p-4">
+            <div key={category} className="border border-gray-200 dark:border-gray-600 rounded-lg p-4 transition-colors">
               <div className="flex justify-between items-center mb-2">
-                <h4 className="font-medium text-gray-900">{category}</h4>
+                <h4 className="font-medium text-gray-900 dark:text-white">{category}</h4>
                 {isEditing ? (
                   <div className="flex items-center space-x-2">
-                    <span className="text-sm text-gray-600">$</span>
+                    <span className="text-sm text-gray-600 dark:text-gray-400">$</span>
                     <input
                       type="number"
                       placeholder="0.00"
@@ -200,11 +200,11 @@ export default function BudgetTracker({ transactions }) {
                       min="0"
                       value={budget || ''}
                       onChange={(e) => setBudget(category, e.target.value)}
-                      className="w-20 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      className="w-20 px-2 py-1 text-sm border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                     />
                   </div>
                 ) : (
-                  <span className="text-sm font-semibold text-gray-700">
+                  <span className="text-sm font-semibold text-gray-700 dark:text-gray-300">
                     ${spent.toFixed(2)} / ${budget.toFixed(2)}
                   </span>
                 )}
@@ -212,7 +212,7 @@ export default function BudgetTracker({ transactions }) {
 
               {budget > 0 && (
                 <>
-                  <div className="w-full bg-gray-200 rounded-full h-2 mb-2">
+                  <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2 mb-2">
                     <div 
                       className={`h-2 rounded-full transition-all duration-300 ${getStatusColor(status)}`}
                       style={{ width: `${Math.min(percentage, 100)}%` }}
@@ -222,7 +222,7 @@ export default function BudgetTracker({ transactions }) {
                     <span className={getStatusTextColor(status)}>
                       {percentage.toFixed(1)}% used
                     </span>
-                    <span className="text-gray-600">
+                    <span className="text-gray-600 dark:text-gray-400">
                       ${(budget - spent).toFixed(2)} {spent > budget ? 'over' : 'left'}
                     </span>
                   </div>
@@ -230,7 +230,7 @@ export default function BudgetTracker({ transactions }) {
               )}
 
               {budget === 0 && !isEditing && (
-                <p className="text-xs text-gray-500 italic">No budget set</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400 italic">No budget set</p>
               )}
             </div>
           );
@@ -238,7 +238,7 @@ export default function BudgetTracker({ transactions }) {
       </div>
 
       {allCategories.length === 0 && (
-        <div className="text-center py-8 text-gray-500">
+        <div className="text-center py-8 text-gray-500 dark:text-gray-400">
           <p className="text-lg font-medium">No spending data available</p>
           <p className="text-sm">Add some expense transactions to start tracking your budget</p>
         </div>

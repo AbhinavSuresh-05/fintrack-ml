@@ -56,8 +56,8 @@ export default function MonthlyOverview({ transactions }) {
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       return (
-        <div className="bg-white p-4 border border-gray-200 rounded-lg shadow-lg">
-          <p className="font-semibold mb-2">{label}</p>
+        <div className="bg-white dark:bg-gray-800 p-4 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg transition-colors">
+          <p className="font-semibold mb-2 text-gray-900 dark:text-white">{label}</p>
           {payload.map((entry, index) => (
             <p key={index} style={{ color: entry.color }} className="text-sm">
               {entry.name}: ${entry.value.toFixed(2)}
@@ -81,13 +81,13 @@ export default function MonthlyOverview({ transactions }) {
   const totalNet = totalIncome - totalExpenses;
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-colors">
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-lg font-semibold text-gray-900">Monthly Overview</h3>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Monthly Overview</h3>
         <select
           value={monthsToShow}
           onChange={(e) => setMonthsToShow(Number(e.target.value))}
-          className="bg-white border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value={3}>Last 3 Months</option>
           <option value={6}>Last 6 Months</option>
@@ -97,24 +97,24 @@ export default function MonthlyOverview({ transactions }) {
 
       {/* Summary Cards */}
       <div className="grid grid-cols-3 gap-4 mb-6">
-        <div className="text-center p-3 bg-green-50 rounded-lg">
-          <p className="text-sm text-green-600 font-medium">Total Income</p>
-          <p className="text-xl font-bold text-green-700">${totalIncome.toFixed(2)}</p>
+        <div className="text-center p-3 bg-green-50 dark:bg-green-900 rounded-lg transition-colors">
+          <p className="text-sm text-green-600 dark:text-green-300 font-medium">Total Income</p>
+          <p className="text-xl font-bold text-green-700 dark:text-green-200">${totalIncome.toFixed(2)}</p>
         </div>
-        <div className="text-center p-3 bg-red-50 rounded-lg">
-          <p className="text-sm text-red-600 font-medium">Total Expenses</p>
-          <p className="text-xl font-bold text-red-700">${totalExpenses.toFixed(2)}</p>
+        <div className="text-center p-3 bg-red-50 dark:bg-red-900 rounded-lg transition-colors">
+          <p className="text-sm text-red-600 dark:text-red-300 font-medium">Total Expenses</p>
+          <p className="text-xl font-bold text-red-700 dark:text-red-200">${totalExpenses.toFixed(2)}</p>
         </div>
-        <div className="text-center p-3 bg-blue-50 rounded-lg">
-          <p className="text-sm text-blue-600 font-medium">Net</p>
-          <p className={`text-xl font-bold ${totalNet >= 0 ? 'text-green-700' : 'text-red-700'}`}>
+        <div className="text-center p-3 bg-blue-50 dark:bg-blue-900 rounded-lg transition-colors">
+          <p className="text-sm text-blue-600 dark:text-blue-300 font-medium">Net</p>
+          <p className={`text-xl font-bold ${totalNet >= 0 ? 'text-green-700 dark:text-green-200' : 'text-red-700 dark:text-red-200'}`}>
             ${totalNet.toFixed(2)}
           </p>
         </div>
       </div>
 
       {chartData.length === 0 ? (
-        <div className="flex items-center justify-center h-64 text-gray-500">
+        <div className="flex items-center justify-center h-64 text-gray-500 dark:text-gray-400">
           <div className="text-center">
             <p className="text-lg font-medium">No data available</p>
             <p className="text-sm">Add some transactions to see your monthly overview</p>

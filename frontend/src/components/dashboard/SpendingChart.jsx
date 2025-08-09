@@ -96,13 +96,13 @@ export default function SpendingChart({ transactions }) {
   }, [transactions, timeframe]);
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-colors">
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-lg font-semibold text-gray-900">Spending Trends</h3>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Spending Trends</h3>
         <select
           value={timeframe}
           onChange={(e) => setTimeframe(e.target.value)}
-          className="bg-white border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-md px-3 py-2 text-sm text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
         >
           <option value="30days">Last 30 Days</option>
           <option value="3months">Last 3 Months</option>
@@ -112,7 +112,7 @@ export default function SpendingChart({ transactions }) {
       </div>
 
       {chartData.length === 0 ? (
-        <div className="flex items-center justify-center h-64 text-gray-500">
+        <div className="flex items-center justify-center h-64 text-gray-500 dark:text-gray-400">
           <div className="text-center">
             <p className="text-lg font-medium">No data available</p>
             <p className="text-sm">Add some transactions to see your spending trends</p>

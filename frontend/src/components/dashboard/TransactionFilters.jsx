@@ -98,17 +98,17 @@ export default function TransactionFilters({ transactions, onFilter }) {
   const activeFilterCount = Object.values(filters).filter(value => value !== '').length;
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-6 transition-colors">
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">Search & Filter Transactions</h3>
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">Search & Filter Transactions</h3>
         {hasActiveFilters && (
           <div className="flex items-center space-x-2">
-            <span className="text-sm text-blue-600 bg-blue-100 px-2 py-1 rounded">
+            <span className="text-sm text-blue-600 dark:text-blue-400 bg-blue-100 dark:bg-blue-900 px-2 py-1 rounded">
               {activeFilterCount} filter{activeFilterCount !== 1 ? 's' : ''} active
             </span>
             <button
               onClick={clearFilters}
-              className="text-sm text-gray-600 hover:text-gray-800 underline"
+              className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 underline"
             >
               Clear all
             </button>
@@ -119,7 +119,7 @@ export default function TransactionFilters({ transactions, onFilter }) {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {/* Search */}
         <div className="lg:col-span-3">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Search
           </label>
           <input
@@ -127,19 +127,19 @@ export default function TransactionFilters({ transactions, onFilter }) {
             placeholder="Search by description, category, or amount..."
             value={filters.search}
             onChange={(e) => handleFilterChange('search', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500 dark:placeholder-gray-400"
           />
         </div>
 
         {/* Category */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Category
           </label>
           <select
             value={filters.category}
             onChange={(e) => handleFilterChange('category', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">All Categories</option>
             {categories.map(category => (
@@ -150,13 +150,13 @@ export default function TransactionFilters({ transactions, onFilter }) {
 
         {/* Type */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Type
           </label>
           <select
             value={filters.type}
             onChange={(e) => handleFilterChange('type', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="">All Types</option>
             <option value="income">Income</option>
@@ -166,33 +166,33 @@ export default function TransactionFilters({ transactions, onFilter }) {
 
         {/* Date From */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Date From
           </label>
           <input
             type="date"
             value={filters.dateFrom}
             onChange={(e) => handleFilterChange('dateFrom', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         {/* Date To */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Date To
           </label>
           <input
             type="date"
             value={filters.dateTo}
             onChange={(e) => handleFilterChange('dateTo', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
 
         {/* Amount Min */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Min Amount ($)
           </label>
           <input
@@ -202,13 +202,13 @@ export default function TransactionFilters({ transactions, onFilter }) {
             min="0"
             value={filters.amountMin}
             onChange={(e) => handleFilterChange('amountMin', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500 dark:placeholder-gray-400"
           />
         </div>
 
         {/* Amount Max */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
             Max Amount ($)
           </label>
           <input
@@ -218,42 +218,42 @@ export default function TransactionFilters({ transactions, onFilter }) {
             min="0"
             value={filters.amountMax}
             onChange={(e) => handleFilterChange('amountMax', e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500 dark:placeholder-gray-400"
           />
         </div>
       </div>
 
       {/* Quick Filter Buttons */}
-      <div className="mt-4 pt-4 border-t border-gray-200">
-        <p className="text-sm font-medium text-gray-700 mb-2">Quick Filters:</p>
+      <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Quick Filters:</p>
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => handleFilterChange('dateFrom', format(new Date(Date.now() - 7 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd'))}
-            className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors"
+            className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-md transition-colors"
           >
             Last 7 days
           </button>
           <button
             onClick={() => handleFilterChange('dateFrom', format(new Date(Date.now() - 30 * 24 * 60 * 60 * 1000), 'yyyy-MM-dd'))}
-            className="px-3 py-1 text-sm bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md transition-colors"
+            className="px-3 py-1 text-sm bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-300 rounded-md transition-colors"
           >
             Last 30 days
           </button>
           <button
             onClick={() => handleFilterChange('type', 'income')}
-            className="px-3 py-1 text-sm bg-green-100 hover:bg-green-200 text-green-700 rounded-md transition-colors"
+            className="px-3 py-1 text-sm bg-green-100 dark:bg-green-900 hover:bg-green-200 dark:hover:bg-green-800 text-green-700 dark:text-green-300 rounded-md transition-colors"
           >
             Income only
           </button>
           <button
             onClick={() => handleFilterChange('type', 'expense')}
-            className="px-3 py-1 text-sm bg-red-100 hover:bg-red-200 text-red-700 rounded-md transition-colors"
+            className="px-3 py-1 text-sm bg-red-100 dark:bg-red-900 hover:bg-red-200 dark:hover:bg-red-800 text-red-700 dark:text-red-300 rounded-md transition-colors"
           >
             Expenses only
           </button>
           <button
             onClick={() => setFilters(prev => ({ ...prev, amountMin: '100' }))}
-            className="px-3 py-1 text-sm bg-blue-100 hover:bg-blue-200 text-blue-700 rounded-md transition-colors"
+            className="px-3 py-1 text-sm bg-blue-100 dark:bg-blue-900 hover:bg-blue-200 dark:hover:bg-blue-800 text-blue-700 dark:text-blue-300 rounded-md transition-colors"
           >
             $100+
           </button>

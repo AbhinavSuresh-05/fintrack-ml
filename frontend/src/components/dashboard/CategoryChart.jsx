@@ -54,12 +54,12 @@ export default function CategoryChart({ transactions }) {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
-        <div className="bg-white p-3 border border-gray-200 rounded-lg shadow-lg">
-          <p className="font-medium">{data.name}</p>
-          <p className="text-sm text-gray-600">
+        <div className="bg-white dark:bg-gray-800 p-3 border border-gray-200 dark:border-gray-600 rounded-lg shadow-lg transition-colors">
+          <p className="font-medium text-gray-900 dark:text-white">{data.name}</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
             Amount: <span className="font-semibold">${data.value.toFixed(2)}</span>
           </p>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-gray-600 dark:text-gray-400">
             Percentage: <span className="font-semibold">{data.percentage}%</span>
           </p>
         </div>
@@ -69,9 +69,9 @@ export default function CategoryChart({ transactions }) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-md p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-colors">
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-lg font-semibold text-gray-900">
+        <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
           {chartType === 'expenses' ? 'Spending' : 'Income'} by Category
         </h3>
         <div className="flex space-x-2">
@@ -79,8 +79,8 @@ export default function CategoryChart({ transactions }) {
             onClick={() => setChartType('expenses')}
             className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
               chartType === 'expenses'
-                ? 'bg-red-100 text-red-700 border border-red-300'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300 border border-red-300 dark:border-red-600'
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             Expenses
@@ -89,8 +89,8 @@ export default function CategoryChart({ transactions }) {
             onClick={() => setChartType('income')}
             className={`px-3 py-1 rounded-md text-sm font-medium transition-colors ${
               chartType === 'income'
-                ? 'bg-green-100 text-green-700 border border-green-300'
-                : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                ? 'bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 border border-green-300 dark:border-green-600'
+                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
             }`}
           >
             Income

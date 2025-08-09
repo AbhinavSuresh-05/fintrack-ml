@@ -1,0 +1,37 @@
+{
+  "name": "FinTrack-ML",
+  "short_name": "FinTrack",
+  "description": "AI-Powered Personal Finance Risk Analyzer & Investment Recommender",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#3b82f6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/vite.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["finance", "productivity", "utilities"],
+  "lang": "en",
+  "dir": "ltr",
+  "scope": "/",
+  "prefer_related_applications": false,
+  "shortcuts": [
+    {
+      "name": "Add Transaction",
+      "short_name": "Add",
+      "description": "Quickly add a new transaction",
+      "url": "/#add-transaction"
+    },
+    {
+      "name": "View Analytics",
+      "short_name": "Analytics", 
+      "description": "View financial analytics and charts",
+      "url": "/#analytics"
+    }
+  ]
+}
