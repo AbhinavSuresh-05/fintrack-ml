@@ -1,0 +1,12 @@
+# Node modules
+node_modules/
+# Environment variables
+.env
+# Build output
+/dist
+/build
+# Python cache
+__pycache__/
+*.pyc
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
