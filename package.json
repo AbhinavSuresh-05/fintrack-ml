@@ -1,0 +1,13 @@
+{
+  "name": "fintrack-ml",
+  "version": "1.0.0",
+  "description": "AI-Powered Personal Finance Risk Analyzer & Investment Recommender",
+  "scripts": {
+    "dev": "echo 'Run: .\\dev-start.ps1 or .\\dev-start.bat to start all services'",
+    "stop": "echo 'Run: .\\dev-stop.bat to stop all services'",
+    "health": "echo 'Run: Invoke-WebRequest http://localhost:5000/ping and Invoke-WebRequest http://localhost:5002/ping to check health'"
+  },
+  "keywords": ["fintech", "ml", "react", "node", "mongodb"],
+  "author": "FinTrack-ML Team",
+  "license": "MIT"
+}

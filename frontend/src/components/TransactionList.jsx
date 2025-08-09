@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export default function TransactionList({ transactions, onDelete }) {
+export default function TransactionList({ transactions, onDelete, showPagination = true }) {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this transaction?')) {
       return;
