@@ -1,23 +1,20 @@
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { format, startOfMonth, endOfMonth, subMonths } from 'date-fns';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo, useMemo } from 'react';
 
-export default function MonthlyOverview({ transactions }) {
-  const [chartData, setChartData] = useState([]);
+const MonthlyOverview = memo(function MonthlyOverview({ transactions }) {
   const [monthsToShow, setMonthsToShow] = useState(6);
 
-  useEffect(() => {
+  const chartData = useMemo(() => {
     if (!transactions || transactions.length === 0) {
-      setChartData([]);
-      return;
+      return [];
     }
 
-    const generateMonthlyData = () => {
-      const data = [];
-      const now = new Date();
-      
-      for (let i = monthsToShow - 1; i >= 0; i--) {
-        const monthStart = startOfMonth(subMonths(now, i));
+    const data = [];
+    const now = new Date();
+    
+    for (let i = monthsToShow - 1; i >= 0; i--) {
+      const monthStart = startOfMonth(subMonths(now, i));
         const monthEnd = endOfMonth(subMonths(now, i));
         
         const monthTransactions = transactions.filter(t => {
@@ -48,9 +45,6 @@ export default function MonthlyOverview({ transactions }) {
       }
 
       return data;
-    };
-
-    setChartData(generateMonthlyData());
   }, [transactions, monthsToShow]);
 
   const CustomTooltip = ({ active, payload, label }) => {
@@ -174,4 +168,6 @@ export default function MonthlyOverview({ transactions }) {
       )}
     </div>
   );
-}
+});
+
+export default MonthlyOverview;

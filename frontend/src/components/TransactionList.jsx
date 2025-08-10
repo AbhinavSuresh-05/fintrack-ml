@@ -1,6 +1,7 @@
 import axios from "axios";
+import { memo } from "react";
 
-export default function TransactionList({ transactions, onDelete, showPagination = true }) {
+const TransactionList = memo(function TransactionList({ transactions, onDelete, showPagination = true }) {
   const handleDelete = async (id) => {
     if (!window.confirm('Are you sure you want to delete this transaction?')) {
       return;
@@ -106,4 +107,6 @@ export default function TransactionList({ transactions, onDelete, showPagination
       </div>
     </div>
   );
-}
+});
+
+export default TransactionList;

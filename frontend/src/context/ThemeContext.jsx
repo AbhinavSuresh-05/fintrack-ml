@@ -11,19 +11,16 @@ export const useTheme = () => {
 };
 
 export const ThemeProvider = ({ children }) => {
-  const [theme, setTheme] = useState('light');
-
-  useEffect(() => {
-    // Check for saved theme in localStorage
+  const [theme, setTheme] = useState(() => {
+    // Priority: 1. Saved theme, 2. System preference, 3. Default to light
     const savedTheme = localStorage.getItem('fintrack-theme');
     if (savedTheme) {
-      setTheme(savedTheme);
-    } else {
-      // Check system preference
-      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      setTheme(prefersDark ? 'dark' : 'light');
+      return savedTheme;
     }
-  }, []);
+    // Only check system preference if no saved theme
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    return prefersDark ? 'dark' : 'light';
+  });
 
   useEffect(() => {
     // Apply theme to document
@@ -32,6 +29,12 @@ export const ThemeProvider = ({ children }) => {
       root.classList.add('dark');
     } else {
       root.classList.remove('dark');
+    }
+    
+    // Keep meta theme-color always black for PWA
+    const metaThemeColor = document.querySelector('meta[name="theme-color"]');
+    if (metaThemeColor) {
+      metaThemeColor.setAttribute('content', '#000000');
     }
     
     // Save theme to localStorage

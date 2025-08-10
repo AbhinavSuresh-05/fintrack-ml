@@ -1,9 +1,12 @@
-const CACHE_NAME = 'fintrack-ml-v1';
+const CACHE_NAME = 'fintrack-ml-v4'; // Force cache refresh to fix icon issues
 const urlsToCache = [
   '/',
-  '/static/js/bundle.js',
-  '/static/css/main.css',
-  '/manifest.json'
+  '/manifest.json',
+  '/favicon.svg',
+  '/favicon-96x96.png',
+  '/apple-touch-icon.png',
+  '/web-app-manifest-192x192.png',
+  '/web-app-manifest-512x512.png'
 ];
 
 // Install Service Worker

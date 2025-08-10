@@ -1,15 +1,15 @@
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from 'recharts';
-import { useState } from 'react';
+import { useState, memo, useMemo } from 'react';
 
 const COLORS = [
   '#3b82f6', '#10b981', '#f59e0b', '#ef4444', '#8b5cf6', 
   '#06b6d4', '#84cc16', '#f97316', '#ec4899', '#6b7280'
 ];
 
-export default function CategoryChart({ transactions }) {
+const CategoryChart = memo(function CategoryChart({ transactions }) {
   const [chartType, setChartType] = useState('expenses'); // expenses or income
 
-  const getCategoryData = () => {
+  const getCategoryData = useMemo(() => {
     if (!transactions || transactions.length === 0) return [];
 
     const filteredTransactions = transactions.filter(t => t.type === chartType);
@@ -39,9 +39,9 @@ export default function CategoryChart({ transactions }) {
         ...item,
         color: COLORS[index % COLORS.length]
       }));
-  };
+  }, [transactions, chartType]);
 
-  const categoryData = getCategoryData();
+  const categoryData = getCategoryData;
   const total = categoryData.reduce((sum, item) => sum + item.value, 0);
   
   // Calculate percentages
@@ -162,4 +162,6 @@ export default function CategoryChart({ transactions }) {
       )}
     </div>
   );
-}
+});
+
+export default CategoryChart;

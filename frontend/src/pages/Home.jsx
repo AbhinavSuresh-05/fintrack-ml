@@ -1,5 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
-import axios from "axios";
+import { useState, useCallback, useEffect } from "react";
 import TransactionForm from "../components/TransactionForm";
 import TransactionList from "../components/TransactionList";
 import Header from "../components/Header";
@@ -15,84 +14,58 @@ import BudgetTracker from "../components/dashboard/BudgetTracker";
 import { SkeletonCard, SkeletonChart, SkeletonTransactionList } from "../components/ui/LoadingSkeletons";
 import KeyboardShortcuts from "../components/ui/KeyboardShortcuts";
 import PWAInstallPrompt from "../components/PWAInstallPrompt";
+import { useTransactions, useTransactionStats, useCreateTransaction, useDeleteTransaction } from "../hooks/useApi";
 
 export default function Home() {
-  const [transactions, setTransactions] = useState([]);
   const [filteredTransactions, setFilteredTransactions] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [stats, setStats] = useState(null);
   const [activeTab, setActiveTab] = useState('overview'); // overview, analytics, budget, transactions
   const { user } = useAuth();
-  const { showSuccess, showError, showLoading, dismiss } = useToast();
+  const { showSuccess, showError } = useToast();
   const { toggleTheme } = useTheme();
 
-  const fetchTransactions = useCallback(async () => {
-    const loadingToast = showLoading('Loading transactions...');
+  // React Query hooks
+  const { data: transactions = [], isLoading: transactionsLoading, error: transactionsError } = useTransactions();
+  const { data: stats, isLoading: statsLoading } = useTransactionStats();
+  const createTransactionMutation = useCreateTransaction();
+  const deleteTransactionMutation = useDeleteTransaction();
+
+  // Handle transaction creation
+  const handleAddTransaction = useCallback(async (newTransaction) => {
     try {
-      setLoading(true);
-      const res = await axios.get("http://localhost:5000/api/transactions");
-      
-      if (res.data.success) {
-        setTransactions(res.data.data.transactions || []);
-        showSuccess('Transactions loaded successfully');
-      } else {
-        console.error('Failed to fetch transactions:', res.data.message);
-        setTransactions([]);
-        showError('Failed to load transactions');
-      }
-    } catch (err) {
-      console.error('Error fetching transactions:', err);
-      setTransactions([]);
-      
-      if (err.response?.status === 401) {
-        showError('Session expired. Please login again.');
-      } else {
-        showError('Error loading transactions');
-      }
-    } finally {
-      setLoading(false);
-      dismiss(loadingToast);
+      await createTransactionMutation.mutateAsync(newTransaction);
+      showSuccess('Transaction added successfully!');
+    } catch (error) {
+      console.error('Error adding transaction:', error);
+      showError('Failed to add transaction');
     }
-  }, [showLoading, showSuccess, showError, dismiss]);
+  }, [createTransactionMutation, showSuccess, showError]);
 
-  const fetchStats = useCallback(async () => {
+  // Handle transaction deletion
+  const handleDeleteTransaction = useCallback(async (transactionId) => {
     try {
-      const res = await axios.get("http://localhost:5000/api/transactions/stats");
-      if (res.data.success) {
-        setStats(res.data.data);
-      }
-    } catch (err) {
-      console.error('Error fetching stats:', err);
+      await deleteTransactionMutation.mutateAsync(transactionId);
+      showSuccess('Transaction deleted successfully!');
+    } catch (error) {
+      console.error('Error deleting transaction:', error);
+      showError('Failed to delete transaction');
     }
-  }, []);
+  }, [deleteTransactionMutation, showSuccess, showError]);
 
-  useEffect(() => {
-    fetchTransactions();
-    fetchStats();
-  }, [fetchTransactions, fetchStats]);
-
-  // Initialize filtered transactions when transactions change
+  // Update filtered transactions when transactions change
   useEffect(() => {
     setFilteredTransactions(transactions);
   }, [transactions]);
-
-  const addTransaction = (transaction) => {
-    setTransactions(prev => [transaction, ...prev]);
-    fetchStats(); // Refresh stats after adding
-    showSuccess('Transaction added successfully!');
-  };
-
-  const deleteTransaction = (id) => {
-    setTransactions(prev => prev.filter(t => t._id !== id));
-    fetchStats(); // Refresh stats after deleting
-    showSuccess('Transaction deleted successfully!');
-  };
 
   const handleFilterTransactions = (filtered) => {
     setFilteredTransactions(filtered);
   };
 
-  if (loading) {
+  // Handlers for React Query mutations
+
+  // Show loading state
+  const isLoading = transactionsLoading || statsLoading;
+
+  if (isLoading) {
     return (
       <>
         <Header />
@@ -100,6 +73,20 @@ export default function Home() {
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
             <p className="mt-4 text-gray-600 dark:text-gray-400">Loading your transactions...</p>
+          </div>
+        </div>
+      </>
+    );
+  }
+
+  // Show error state
+  if (transactionsError) {
+    return (
+      <>
+        <Header />
+        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-red-600 dark:text-red-400">Error loading transactions. Please try again.</p>
           </div>
         </div>
       </>
@@ -219,7 +206,7 @@ export default function Home() {
               {/* Quick Action and Recent Transactions */}
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-1">
-                  <TransactionForm onAdd={addTransaction} />
+                  <TransactionForm onAdd={handleAddTransaction} />
                 </div>
                 <div className="lg:col-span-2">
                   <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 transition-colors">
@@ -228,7 +215,7 @@ export default function Home() {
                       <>
                         <TransactionList 
                           transactions={transactions.slice(0, 5)} 
-                          onDelete={deleteTransaction} 
+                          onDelete={handleDeleteTransaction} 
                           showPagination={false}
                         />
                         {transactions.length > 5 && (
@@ -268,7 +255,7 @@ export default function Home() {
               </div>
               
               {transactions.length > 0 ? (
-                <MonthlyOverview transactions={transactions} />
+                <MonthlyOverview transactions={transactions} stats={stats} />
               ) : (
                 <SkeletonChart />
               )}
@@ -322,7 +309,7 @@ export default function Home() {
               
               <TransactionList 
                 transactions={filteredTransactions} 
-                onDelete={deleteTransaction} 
+                onDelete={handleDeleteTransaction} 
               />
             </div>
           )}

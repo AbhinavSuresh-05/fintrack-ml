@@ -1,8 +1,8 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import { format, startOfMonth, endOfMonth, eachDayOfInterval, parseISO } from 'date-fns';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, memo, useMemo } from 'react';
 
-export default function SpendingChart({ transactions }) {
+const SpendingChart = memo(function SpendingChart({ transactions }) {
   const [timeframe, setTimeframe] = useState('30days'); // 30days, 3months, 6months, 1year
   const [chartData, setChartData] = useState([]);
 
@@ -169,4 +169,6 @@ export default function SpendingChart({ transactions }) {
       )}
     </div>
   );
-}
+});
+
+export default SpendingChart;

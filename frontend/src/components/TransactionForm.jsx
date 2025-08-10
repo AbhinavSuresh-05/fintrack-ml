@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
 import { useToast } from "../context/ToastContext";
+import { useCreateTransaction } from "../hooks/useApi";
 
 export default function TransactionForm({ onAdd }) {
   const [form, setForm] = useState({ 
@@ -10,8 +10,9 @@ export default function TransactionForm({ onAdd }) {
     description: "",
     type: "expense"
   });
-  const [isLoading, setIsLoading] = useState(false);
-  const { showSuccess, showError, showLoading, dismiss } = useToast();
+  
+  const { showSuccess, showError } = useToast();
+  const addTransactionMutation = useCreateTransaction();
 
   const categories = [
     'Food & Dining',
@@ -37,8 +38,6 @@ export default function TransactionForm({ onAdd }) {
       return;
     }
 
-    const loadingToast = showLoading('Adding transaction...');
-    setIsLoading(true);
     try {
       const transactionData = {
         title: form.title,
@@ -49,27 +48,26 @@ export default function TransactionForm({ onAdd }) {
         date: new Date().toISOString()
       };
 
-      const res = await axios.post("http://localhost:5000/api/transactions", transactionData);
+      const newTransaction = await addTransactionMutation.mutateAsync(transactionData);
       
-      if (res.data.success) {
-        onAdd(res.data.data);
-        setForm({ 
-          title: "", 
-          amount: "", 
-          category: "",
-          description: "",
-          type: "expense"
-        });
-        showSuccess("Transaction added successfully!");
-      } else {
-        showError("Failed to add transaction: " + res.data.message);
+      // Reset form
+      setForm({ 
+        title: "", 
+        amount: "", 
+        category: "",
+        description: "",
+        type: "expense"
+      });
+      
+      // Call the optional onAdd callback
+      if (onAdd) {
+        onAdd(newTransaction);
       }
+      
+      showSuccess("Transaction added successfully!");
     } catch (err) {
       console.error('Transaction error:', err);
       showError("Failed to add transaction: " + (err.response?.data?.message || err.message));
-    } finally {
-      setIsLoading(false);
-      dismiss(loadingToast);
     }
   };
 
@@ -159,10 +157,10 @@ export default function TransactionForm({ onAdd }) {
 
         <button 
           type="submit"
-          disabled={isLoading}
+          disabled={addTransactionMutation.isPending}
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {isLoading ? 'Adding Transaction...' : 'Add Transaction'}
+          {addTransactionMutation.isPending ? 'Adding Transaction...' : 'Add Transaction'}
         </button>
       </form>
     </div>
